@@ -12,9 +12,9 @@ the result. For that, create a pull request (PR) from **your** work branch to **
 branch (please, don't create a PR to this repository). Then, we will proceed reviewing the same way
 we do it at Redbooth.
 
-BTW, the result must compile, but you don't have to test it. It lacks public/private keys, and we
-don't need you go through the process of obtaining them. But again, you are free to do what you
-want.
+BTW, the result must compile, but there's no need to make it sure that it works on a device. It
+lacks public/private keys, and we don't need you go through the process of obtaining them. But
+again, you are free to do what you want.
 
 There's no time limit, but time is precious when you don't have a Tardis. We designed this exercise
 so it shouldn't take more than 3 hours at most. But this is not a time restriction or a rule you
