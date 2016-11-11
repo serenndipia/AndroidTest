@@ -6,7 +6,10 @@ want to improve it's readability, and structure it in a way the can be easily gr
 But we don't want it to become over engineered.
 
 Your mission, should you choose to accept it, is to fork this repository into your Github account,
-and refactor the code (mainly MainActivity.java, but you are free to change any other file).
+and refactor the code (mainly MainActivity.java, but you are free to change any other file). It's
+also important for us to see the process you follow when refactoring the code, so imagine that you
+are doing this refactor as a part of your current job.
+
 Once you have finished, invite users @akelael and @nescafemix to your repo, so they can code review
 the result. For that, create a pull request (PR) from **your** work branch to **your** master
 branch (please, don't create a PR to this repository). Then, we will proceed reviewing the same way
