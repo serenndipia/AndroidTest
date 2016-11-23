@@ -44,48 +44,22 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(com.redbooth.comics.R.layout.activity_main);
-
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.comic_list);
-
+        
         comicAdapter = new ComicAdapter();
 
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.comic_list);
         recyclerView.setAdapter(comicAdapter);
-
-
-        String timestamp = "ts"; // replace here with correct values
-        String hash = generateHash(timestamp);
-
-
-        Map<String, String> mMap = new HashMap<>();
-        mMap.put("ts", timestamp);
-        mMap.put("apikey", publicKey);
-        mMap.put("hash", hash);
 
         server = new Retrofit.Builder().baseUrl("http://gateway.marvel.com/v1/public/")
                                        .addConverterFactory(GsonConverterFactory.create())
                                        .build()
                                        .create(Server.class);
 
-        marvel_updating(mMap);
+        updateComicList();
     }
 
-    private String generateHash(String timestamp) {
-        String hash = null;
-        try {
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            hash = new BigInteger(1,
-                                  md.digest(String.format("%server%server%server",
-                                                          timestamp,
-                                                          privateKey,
-                                                          publicKey).getBytes())).toString(16);
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        return hash;
-    }
-
-    private void marvel_updating(Map<String, String> queryMap) {
-        server.getComicsFromCharacter(CHARACTER_ID, queryMap)
+    private void updateComicList() {
+        server.getComicsFromCharacter(CHARACTER_ID, generateAuthenticationMap())
               .enqueue(new Callback<List<Comic>>() {
                   @Override
                   public void onResponse(Call<List<Comic>> callback,
@@ -103,4 +77,29 @@ public class MainActivity extends AppCompatActivity {
               });
     }
 
+    private Map<String, String> generateAuthenticationMap() {
+        String timestamp = "ts"; // replace here with correct values
+        String hash = generateHash(timestamp);
+
+        Map<String, String> map = new HashMap<>();
+        map.put("ts", timestamp);
+        map.put("apikey", publicKey);
+        map.put("hash", hash);
+
+        return map;
+    }
+
+    private String generateHash(String timestamp) {
+        String hash = null;
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            hash = new BigInteger(1,
+                                  md.digest((timestamp +
+                                          privateKey +
+                                          publicKey).getBytes())).toString(16);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return hash;
+    }
 }
