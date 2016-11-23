@@ -20,8 +20,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
     private final static int    CHARACTER_ID = 1010733;
-    private final static String privateKey   = "private_key"; // replace here with correct values
-    private final static String publicKey    = "public_key"; // replace here with correct values
     private MarvelService marvelService;
     private ComicAdapter  comicAdapter;
 
@@ -44,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateComicList() {
-        marvelService.getComicsFromCharacter(CHARACTER_ID, generateAuthenticationMap())
+        marvelService.getComicsFromCharacter(CHARACTER_ID, generateAuthenticationParams())
                      .enqueue(new Callback<List<Comic>>() {
                          @Override
                          public void onResponse(Call<List<Comic>> callback,
@@ -70,13 +68,13 @@ public class MainActivity extends AppCompatActivity {
                      });
     }
 
-    private Map<String, String> generateAuthenticationMap() {
+    private Map<String, String> generateAuthenticationParams() {
         String timestamp = "ts"; // replace here with correct values
         String hash = generateHash(timestamp);
 
         Map<String, String> map = new HashMap<>();
         map.put("ts", timestamp);
-        map.put("apikey", publicKey);
+        map.put("apikey", getString(R.string.public_key));
         map.put("hash", hash);
 
         return map;
@@ -88,8 +86,8 @@ public class MainActivity extends AppCompatActivity {
             MessageDigest md = MessageDigest.getInstance("MD5");
             hash = new BigInteger(1,
                                   md.digest((timestamp +
-                                          privateKey +
-                                          publicKey).getBytes())).toString(16);
+                                          getString(R.string.private_key) +
+                                          getString(R.string.public_key)).getBytes())).toString(16);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }

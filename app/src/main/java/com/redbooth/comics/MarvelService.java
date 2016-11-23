@@ -15,5 +15,5 @@ interface MarvelService {
      */
     @GET("characters/{characterId}/comics")
     Call<List<Comic>> getComicsFromCharacter(@Path("characterId") int characterId,
-                                             @QueryMap Map<String, String> digest);
+                                             @QueryMap Map<String, String> authenticationParams);
 }

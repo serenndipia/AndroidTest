@@ -2,4 +2,6 @@
     <string name="app_name">Comics</string>
     <string name="error_message">Something went wrong! Make sure you have connection and try again, please!</string>
     <string name="base_url">http://gateway.marvel.com/v1/public/</string>
+    <string name="private_key">private key to be added</string>
+    <string name="public_key">public key to be added </string>
 </resources>

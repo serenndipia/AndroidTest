@@ -10,7 +10,6 @@ import com.squareup.picasso.Picasso;
 class ComicViewHolder extends RecyclerView.ViewHolder {
     private ImageView thumbnail;
     private TextView  title;
-    private Comic     item;
 
     ComicViewHolder(View itemView) {
         super(itemView);
@@ -19,7 +18,6 @@ class ComicViewHolder extends RecyclerView.ViewHolder {
     }
 
     void bind(Comic comic) {
-        item = comic;
         title.setText(comic.getTitle());
         Picasso.with(itemView.getContext())
                .load(comic.getThumbnailURL())
