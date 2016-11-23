@@ -6,8 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.squareup.picasso.Picasso;
-
 import java.util.Collections;
 import java.util.List;
 
@@ -31,13 +29,7 @@ class ComicAdapter extends RecyclerView.Adapter<ComicViewHolder> {
     @Override
     public void onBindViewHolder(ComicViewHolder holder, int position) {
         final Comic comic = comics.get(position);
-        holder.item = comic;
-        holder.title.setText(comic.getTitle());
-        Picasso.with(holder.itemView.getContext())
-               .load(comic.getThumbnailURL())
-               .fit()
-               .centerInside()
-               .into(holder.thumbnail);
+        holder.bind(comic);
     }
 
     @Override
