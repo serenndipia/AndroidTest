@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Comics</string>
+    <string name="error_message">Something went wrong! Make sure you have connection and try again, please!</string>
 </resources>

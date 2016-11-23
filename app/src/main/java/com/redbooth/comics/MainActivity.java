@@ -3,6 +3,7 @@ package com.redbooth.comics;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.widget.Toast;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -44,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(com.redbooth.comics.R.layout.activity_main);
-        
+
         comicAdapter = new ComicAdapter();
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.comic_list);
@@ -72,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
                   @Override
                   public void onFailure(Call<List<Comic>> call, Throwable t) {
-                      //TODO do something here
+                      Toast.makeText(MainActivity.this, R.string.error_message, Toast.LENGTH_SHORT).show();
                   }
               });
     }
