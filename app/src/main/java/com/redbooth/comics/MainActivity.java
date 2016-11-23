@@ -29,7 +29,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * 這是應用程序的主要活動。它顯示在主屏幕和AppCompatActivity繼承
  */
 public class MainActivity extends AppCompatActivity {
-    private final static int CHARACTER_ID = 1010733;
+    private final static int    CHARACTER_ID = 1010733;
+    private final static String privateKey   = "private_key"; // replace here with correct values
+    private final static String publicKey    = "public_key"; // replace here with correct values
     private Server       server;
     private ComicAdapter comicAdapter;
 
@@ -43,26 +45,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(com.redbooth.comics.R.layout.activity_main);
 
-        RecyclerView mList = (RecyclerView) findViewById(R.id.comic_list);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.comic_list);
 
         comicAdapter = new ComicAdapter();
 
-        mList.setAdapter(comicAdapter);
+        recyclerView.setAdapter(comicAdapter);
+
 
         String timestamp = "ts"; // replace here with correct values
-        String privateKey = "private_key"; // replace here with correct values
-        String publicKey = "public_key"; // replace here with correct values
-        String hash = "";
-        try {
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            hash = new BigInteger(1,
-                                  md.digest(String.format("%server%server%server",
-                                                          timestamp,
-                                                          privateKey,
-                                                          publicKey).getBytes())).toString(16);
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
+        String hash = generateHash(timestamp);
+
 
         Map<String, String> mMap = new HashMap<>();
         mMap.put("ts", timestamp);
@@ -75,6 +67,21 @@ public class MainActivity extends AppCompatActivity {
                                        .create(Server.class);
 
         marvel_updating(mMap);
+    }
+
+    private String generateHash(String timestamp) {
+        String hash = null;
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            hash = new BigInteger(1,
+                                  md.digest(String.format("%server%server%server",
+                                                          timestamp,
+                                                          privateKey,
+                                                          publicKey).getBytes())).toString(16);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return hash;
     }
 
     private void marvel_updating(Map<String, String> queryMap) {
