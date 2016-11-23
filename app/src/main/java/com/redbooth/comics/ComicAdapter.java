@@ -49,7 +49,7 @@ class ComicAdapter extends RecyclerView.Adapter<ComicViewHolder> {
         return count;
     }
 
-    public void setC(List<Comic> comics) {
+    public void setComics(List<Comic> comics) {
         this.comics = comics;
     }
 }

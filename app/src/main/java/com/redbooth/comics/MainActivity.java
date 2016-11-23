@@ -38,24 +38,14 @@ public class MainActivity extends AppCompatActivity {
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // on create
-
-        // call super always
         super.onCreate(savedInstanceState);
-
-        // setting the view
         setContentView(com.redbooth.comics.R.layout.activity_main);
 
-        // set recyclerview
         RecyclerView mList = (RecyclerView) findViewById(R.id.comic_list);
 
-        // Create comic adapter
         final ComicAdapter a = new ComicAdapter();
 
-
-        // set adapter
         mList.setAdapter(a);
-
 
         String timestamp = "ts"; // replace here with correct values
         String privateKey = "private_key"; // replace here with correct values
@@ -72,22 +62,16 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-
-        // Create hashmap
         Map<String, String> mMap = new HashMap<>();
         mMap.put("ts", timestamp);
         mMap.put("apikey", publicKey);
         mMap.put("hash", hash);
-
-
-        // update marvel
 
         server = new Retrofit.Builder().baseUrl("http://gateway.marvel.com/v1/public/")
                                        .addConverterFactory(GsonConverterFactory.create())
                                        .build()
                                        .create(Server.class);
 
-        // call marvel updating. Don't forget to call it
         marvel_updating(a, mMap);
     }
 
@@ -109,14 +93,9 @@ public class MainActivity extends AppCompatActivity {
     private void marvel_updating(final ComicAdapter comicAdapter, Map<String, String> queryMap) {
         server.amazingspiderman(1010733, queryMap).enqueue(new Callback<List<Comic>>() {
             @Override
-            public void onResponse(Call<List<Comic>> c, Response<List<Comic>> r) {
-                // Everything is ok
-                if (r.code() == 200) {
-
-                    // set
-                    comicAdapter.setC(r.body());
-
-                    // notify data set changed
+            public void onResponse(Call<List<Comic>> callback, Response<List<Comic>> response) {
+                if (response.isSuccessful()) {
+                    comicAdapter.setComics(response.body());
                     comicAdapter.notifyDataSetChanged();
                 }
             }
