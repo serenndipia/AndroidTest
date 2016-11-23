@@ -33,12 +33,16 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.comic_list);
         recyclerView.setAdapter(comicAdapter);
 
+        buildService();
+
+        updateComicList();
+    }
+
+    private void buildService() {
         marvelService = new Retrofit.Builder().baseUrl(getString(R.string.base_url))
                                               .addConverterFactory(GsonConverterFactory.create())
                                               .build()
                                               .create(MarvelService.class);
-
-        updateComicList();
     }
 
     private void updateComicList() {
