@@ -5,8 +5,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.redbooth.comics.Marvel.Data.Comic;
-
 class ComicViewHolder extends RecyclerView.ViewHolder {
     ImageView thumbnail;
     TextView  title;

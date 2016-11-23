@@ -8,6 +8,7 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -28,18 +29,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * 這是應用程序的主要活動。它顯示在主屏幕和AppCompatActivity繼承
  */
 public class MainActivity extends AppCompatActivity {
-    // Main Activity
-    // Principal Activity of this app
-
-    // Public fields
-    public  Retrofit            r;
-    public  Server              s;
-    // Private fields
-    private RecyclerView        mList;
-    private Map<String, String> mMap;
-    private Retrofit.Builder    b;
-    // Nothing fields
-    private Call<Marvel>        c;
+    private Server server;
 
     /**
      * 在拉曼恰，名字我不記得了，時間不長，因為住在離那些槍和盾古代，精益黑客和竊喜靈獅的貴族村
@@ -57,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(com.redbooth.comics.R.layout.activity_main);
 
         // set recyclerview
-        mList = (RecyclerView) findViewById(com.redbooth.comics.R.id.comic_list);
+        RecyclerView mList = (RecyclerView) findViewById(R.id.comic_list);
 
         // Create comic adapter
         final ComicAdapter a = new ComicAdapter();
@@ -74,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
             hash = new BigInteger(1,
-                                  md.digest(String.format("%s%s%s",
+                                  md.digest(String.format("%server%server%server",
                                                           timestamp,
                                                           privateKey,
                                                           publicKey).getBytes())).toString(16);
@@ -84,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         // Create hashmap
-        mMap = new HashMap<>();
+        Map<String, String> mMap = new HashMap<>();
         mMap.put("ts", timestamp);
         mMap.put("apikey", publicKey);
         mMap.put("hash", hash);
@@ -92,13 +82,13 @@ public class MainActivity extends AppCompatActivity {
 
         // update marvel
 
-
-        // Create builder
-        b = new Retrofit.Builder().baseUrl("http://gateway.marvel.com/v1/public/")
-                                  .addConverterFactory(GsonConverterFactory.create());
+        server = new Retrofit.Builder().baseUrl("http://gateway.marvel.com/v1/public/")
+                                       .addConverterFactory(GsonConverterFactory.create())
+                                       .build()
+                                       .create(Server.class);
 
         // call marvel updating. Don't forget to call it
-        marvel_updating(a, mMap, b);
+        marvel_updating(a, mMap);
     }
 
     /**
@@ -113,44 +103,29 @@ public class MainActivity extends AppCompatActivity {
      * This method generates a retrofit object and calls amazingcomics. It then calls
      * enqueue. It then notifies data set changed
      *
-     * @param a ComicAdapter a
-     * @param m Map mMap
-     * @param b Builder b
+     * @param comicAdapter ComicAdapter a
+     * @param queryMap     Map mMap
      */
-    private void marvel_updating(final ComicAdapter a, Map<String, String> m, Retrofit.Builder b) {
-        // update
-
-        // build r
-        r = b.build();
-
-        // create s
-        s = r.create(Server.class);
-
-        // retrieve amazingcomics
-        c = s.amazingspiderman(1010733, m);
-
-        // enqueue amazingcomics call
-        c.enqueue(new Callback<Marvel>() {
+    private void marvel_updating(final ComicAdapter comicAdapter, Map<String, String> queryMap) {
+        server.amazingspiderman(1010733, queryMap).enqueue(new Callback<List<Comic>>() {
             @Override
-            public void onResponse(Call<Marvel> c, Response<Marvel> r) {
+            public void onResponse(Call<List<Comic>> c, Response<List<Comic>> r) {
                 // Everything is ok
                 if (r.code() == 200) {
 
                     // set
-                    a.setC(r.body().data.results);
+                    comicAdapter.setC(r.body());
 
                     // notify data set changed
-                    a.notifyDataSetChanged();
+                    comicAdapter.notifyDataSetChanged();
                 }
-
             }
 
             @Override
-            public void onFailure(Call<Marvel> call, Throwable t) {
+            public void onFailure(Call<List<Comic>> call, Throwable t) {
                 //TODO do something here
             }
         });
-
 
     }
 

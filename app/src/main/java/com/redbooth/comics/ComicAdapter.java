@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.redbooth.comics.Marvel.Data.Comic;
 import com.squareup.picasso.Picasso;
 
 import java.util.Collections;
@@ -50,7 +49,7 @@ class ComicAdapter extends RecyclerView.Adapter<ComicViewHolder> {
         return count;
     }
 
-    public void setC(List<Marvel.Data.Comic> comics) {
+    public void setC(List<Comic> comics) {
         this.comics = comics;
     }
 }
