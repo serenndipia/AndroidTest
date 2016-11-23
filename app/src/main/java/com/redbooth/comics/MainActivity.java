@@ -19,29 +19,27 @@ import retrofit2.converter.gson.GsonConverterFactory;
 // Class created by someone learning chinese? I'm not sure
 // Updated by Unknown
 //
-// WARNING!!! Be careful about building the Retrofit Object. It requires to be executed in the same order it has been developed. Otherwise, weird things can happen or the app can crash
+// WARNING!!! Be careful about building the Retrofit Object. It requires to be executed in the
+// same order it has been developed. Otherwise, weird things can happen or the app can crash
 
 /**
  * 耶穌巴列斯特羅
- *
+ * <p>
  * 這是應用程序的主要活動。它顯示在主屏幕和AppCompatActivity繼承
  */
-public class MainActivity extends AppCompatActivity
-{
+public class MainActivity extends AppCompatActivity {
     // Main Activity
     // Principal Activity of this app
 
-    // Private fields
-    private RecyclerView mList;
-    private Map<String, String> mMap;
-    private Retrofit.Builder b;
-
     // Public fields
-    public Retrofit r;
-    public Server s;
-
+    public  Retrofit            r;
+    public  Server              s;
+    // Private fields
+    private RecyclerView        mList;
+    private Map<String, String> mMap;
+    private Retrofit.Builder    b;
     // Nothing fields
-    private Call<Marvel> c;
+    private Call<Marvel>        c;
 
     /**
      * 在拉曼恰，名字我不記得了，時間不長，因為住在離那些槍和盾古代，精益黑客和竊喜靈獅的貴族村
@@ -49,8 +47,7 @@ public class MainActivity extends AppCompatActivity
      * @param savedInstanceState 堂吉訶德
      */
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         // on create
 
         // call super always
@@ -70,14 +67,17 @@ public class MainActivity extends AppCompatActivity
         mList.setAdapter(a);
 
 
-
         String timestamp = "ts"; // replace here with correct values
         String privateKey = "private_key"; // replace here with correct values
         String publicKey = "public_key"; // replace here with correct values
         String hash = "";
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
-            hash = new BigInteger(1,md.digest(String.format("%s%s%s", timestamp, privateKey, publicKey).getBytes())).toString(16);
+            hash = new BigInteger(1,
+                                  md.digest(String.format("%s%s%s",
+                                                          timestamp,
+                                                          privateKey,
+                                                          publicKey).getBytes())).toString(16);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
@@ -94,7 +94,8 @@ public class MainActivity extends AppCompatActivity
 
 
         // Create builder
-        b = new Retrofit.Builder().baseUrl("http://gateway.marvel.com/v1/public/").addConverterFactory(GsonConverterFactory.create());
+        b = new Retrofit.Builder().baseUrl("http://gateway.marvel.com/v1/public/")
+                                  .addConverterFactory(GsonConverterFactory.create());
 
         // call marvel updating. Don't forget to call it
         marvel_updating(a, mMap, b);
@@ -103,10 +104,10 @@ public class MainActivity extends AppCompatActivity
     /**
      * Method marvel_updating
      * Class MainActivity
-     *
+     * <p>
      * author Unknown
      * modified by Unknown
-     *
+     * <p>
      * This method receives a ComicAdapter, a Map and a Builder. Returns nothing.
      * This method updates marvel
      * This method generates a retrofit object and calls amazingcomics. It then calls
@@ -116,8 +117,7 @@ public class MainActivity extends AppCompatActivity
      * @param m Map mMap
      * @param b Builder b
      */
-    private void marvel_updating(final ComicAdapter a, Map<String, String> m, Retrofit.Builder b)
-    {
+    private void marvel_updating(final ComicAdapter a, Map<String, String> m, Retrofit.Builder b) {
         // update
 
         // build r

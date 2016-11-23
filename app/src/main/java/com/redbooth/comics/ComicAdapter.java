@@ -6,9 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.squareup.picasso.Picasso;
-
 import com.redbooth.comics.Marvel.Data.Comic;
+import com.squareup.picasso.Picasso;
 
 import java.util.Collections;
 import java.util.List;
@@ -24,7 +23,9 @@ class ComicAdapter extends RecyclerView.Adapter<ComicViewHolder> {
     public ComicViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater layoutInflater = LayoutInflater.from(context);
-        View view = layoutInflater.inflate(com.redbooth.comics.R.layout.comic_list_content, parent, false);
+        View view = layoutInflater.inflate(com.redbooth.comics.R.layout.comic_list_content,
+                                           parent,
+                                           false);
         return new ComicViewHolder(view);
     }
 
@@ -34,10 +35,10 @@ class ComicAdapter extends RecyclerView.Adapter<ComicViewHolder> {
         holder.item = comic;
         holder.title.setText(comic.getTitle());
         Picasso.with(holder.itemView.getContext())
-                .load(comic.getThumbnailURL())
-                .fit()
-                .centerInside()
-                .into(holder.thumbnail);
+               .load(comic.getThumbnailURL())
+               .fit()
+               .centerInside()
+               .into(holder.thumbnail);
     }
 
     @Override

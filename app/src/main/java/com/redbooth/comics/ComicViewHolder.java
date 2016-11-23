@@ -9,8 +9,8 @@ import com.redbooth.comics.Marvel.Data.Comic;
 
 class ComicViewHolder extends RecyclerView.ViewHolder {
     ImageView thumbnail;
-    TextView title;
-    Comic item;
+    TextView  title;
+    Comic     item;
 
     ComicViewHolder(View itemView) {
         super(itemView);

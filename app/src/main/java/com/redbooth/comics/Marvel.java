@@ -10,13 +10,8 @@ class Marvel {
         public List<Comic> results = new ArrayList<>();
 
         public static class Comic {
-            public String title;
+            public String    title;
             public Thumbnail thumbnail;
-
-            public static class Thumbnail {
-                public String path;
-                public String extension;
-            }
 
             public String getThumbnailURL() {
                 return thumbnail.path + "." + thumbnail.extension;
@@ -24,6 +19,11 @@ class Marvel {
 
             public String getTitle() {
                 return title;
+            }
+
+            public static class Thumbnail {
+                public String path;
+                public String extension;
             }
         }
     }
