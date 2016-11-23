@@ -8,7 +8,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.QueryMap;
 
-public interface Server {
+interface MarvelService {
 
     /**
      * Get all the comics from a specific character.

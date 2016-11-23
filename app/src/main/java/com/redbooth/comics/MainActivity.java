@@ -33,8 +33,8 @@ public class MainActivity extends AppCompatActivity {
     private final static int    CHARACTER_ID = 1010733;
     private final static String privateKey   = "private_key"; // replace here with correct values
     private final static String publicKey    = "public_key"; // replace here with correct values
-    private Server       server;
-    private ComicAdapter comicAdapter;
+    private MarvelService marvelService;
+    private ComicAdapter  comicAdapter;
 
     /**
      * 在拉曼恰，名字我不記得了，時間不長，因為住在離那些槍和盾古代，精益黑客和竊喜靈獅的貴族村
@@ -51,31 +51,39 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.comic_list);
         recyclerView.setAdapter(comicAdapter);
 
-        server = new Retrofit.Builder().baseUrl("http://gateway.marvel.com/v1/public/")
-                                       .addConverterFactory(GsonConverterFactory.create())
-                                       .build()
-                                       .create(Server.class);
+        marvelService = new Retrofit.Builder().baseUrl(getString(R.string.base_url))
+                                              .addConverterFactory(GsonConverterFactory.create())
+                                              .build()
+                                              .create(MarvelService.class);
 
         updateComicList();
     }
 
     private void updateComicList() {
-        server.getComicsFromCharacter(CHARACTER_ID, generateAuthenticationMap())
-              .enqueue(new Callback<List<Comic>>() {
-                  @Override
-                  public void onResponse(Call<List<Comic>> callback,
-                                         Response<List<Comic>> response) {
-                      if (response.isSuccessful()) {
-                          comicAdapter.setComics(response.body());
-                          comicAdapter.notifyDataSetChanged();
-                      }
-                  }
+        marvelService.getComicsFromCharacter(CHARACTER_ID, generateAuthenticationMap())
+                     .enqueue(new Callback<List<Comic>>() {
+                         @Override
+                         public void onResponse(Call<List<Comic>> callback,
+                                                Response<List<Comic>> response) {
+                             if (response.isSuccessful()) {
+                                 comicAdapter.setComics(response.body());
+                                 comicAdapter.notifyDataSetChanged();
+                             } else {
+                                 displayErrorMessage();
+                             }
+                         }
 
-                  @Override
-                  public void onFailure(Call<List<Comic>> call, Throwable t) {
-                      Toast.makeText(MainActivity.this, R.string.error_message, Toast.LENGTH_SHORT).show();
-                  }
-              });
+                         @Override
+                         public void onFailure(Call<List<Comic>> call, Throwable t) {
+                             displayErrorMessage();
+                         }
+
+                         private void displayErrorMessage() {
+                             Toast.makeText(MainActivity.this,
+                                            R.string.error_message,
+                                            Toast.LENGTH_SHORT).show();
+                         }
+                     });
     }
 
     private Map<String, String> generateAuthenticationMap() {
