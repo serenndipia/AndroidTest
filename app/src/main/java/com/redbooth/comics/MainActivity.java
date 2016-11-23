@@ -29,7 +29,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * 這是應用程序的主要活動。它顯示在主屏幕和AppCompatActivity繼承
  */
 public class MainActivity extends AppCompatActivity {
-    private Server server;
+    private final static int CHARACTER_ID = 1010733;
+    private Server       server;
+    private ComicAdapter comicAdapter;
 
     /**
      * 在拉曼恰，名字我不記得了，時間不長，因為住在離那些槍和盾古代，精益黑客和竊喜靈獅的貴族村
@@ -43,9 +45,9 @@ public class MainActivity extends AppCompatActivity {
 
         RecyclerView mList = (RecyclerView) findViewById(R.id.comic_list);
 
-        final ComicAdapter a = new ComicAdapter();
+        comicAdapter = new ComicAdapter();
 
-        mList.setAdapter(a);
+        mList.setAdapter(comicAdapter);
 
         String timestamp = "ts"; // replace here with correct values
         String privateKey = "private_key"; // replace here with correct values
@@ -72,40 +74,26 @@ public class MainActivity extends AppCompatActivity {
                                        .build()
                                        .create(Server.class);
 
-        marvel_updating(a, mMap);
+        marvel_updating(mMap);
     }
 
-    /**
-     * Method marvel_updating
-     * Class MainActivity
-     * <p>
-     * author Unknown
-     * modified by Unknown
-     * <p>
-     * This method receives a ComicAdapter, a Map and a Builder. Returns nothing.
-     * This method updates marvel
-     * This method generates a retrofit object and calls amazingcomics. It then calls
-     * enqueue. It then notifies data set changed
-     *
-     * @param comicAdapter ComicAdapter a
-     * @param queryMap     Map mMap
-     */
-    private void marvel_updating(final ComicAdapter comicAdapter, Map<String, String> queryMap) {
-        server.amazingspiderman(1010733, queryMap).enqueue(new Callback<List<Comic>>() {
-            @Override
-            public void onResponse(Call<List<Comic>> callback, Response<List<Comic>> response) {
-                if (response.isSuccessful()) {
-                    comicAdapter.setComics(response.body());
-                    comicAdapter.notifyDataSetChanged();
-                }
-            }
+    private void marvel_updating(Map<String, String> queryMap) {
+        server.getComicsFromCharacter(CHARACTER_ID, queryMap)
+              .enqueue(new Callback<List<Comic>>() {
+                  @Override
+                  public void onResponse(Call<List<Comic>> callback,
+                                         Response<List<Comic>> response) {
+                      if (response.isSuccessful()) {
+                          comicAdapter.setComics(response.body());
+                          comicAdapter.notifyDataSetChanged();
+                      }
+                  }
 
-            @Override
-            public void onFailure(Call<List<Comic>> call, Throwable t) {
-                //TODO do something here
-            }
-        });
-
+                  @Override
+                  public void onFailure(Call<List<Comic>> call, Throwable t) {
+                      //TODO do something here
+                  }
+              });
     }
 
 }

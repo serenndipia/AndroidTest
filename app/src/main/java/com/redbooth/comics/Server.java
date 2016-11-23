@@ -14,6 +14,6 @@ public interface Server {
      * Get all the comics from a specific character.
      */
     @GET("characters/{characterId}/comics")
-    Call<List<Comic>> amazingspiderman(@Path("characterId") int characterId,
-                                       @QueryMap Map<String, String> digest);
+    Call<List<Comic>> getComicsFromCharacter(@Path("characterId") int characterId,
+                                             @QueryMap Map<String, String> digest);
 }
