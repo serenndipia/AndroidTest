@@ -18,17 +18,6 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-// Class created by someone learning chinese? I'm not sure
-// Updated by Unknown
-//
-// WARNING!!! Be careful about building the Retrofit Object. It requires to be executed in the
-// same order it has been developed. Otherwise, weird things can happen or the app can crash
-
-/**
- * 耶穌巴列斯特羅
- * <p>
- * 這是應用程序的主要活動。它顯示在主屏幕和AppCompatActivity繼承
- */
 public class MainActivity extends AppCompatActivity {
     private final static int    CHARACTER_ID = 1010733;
     private final static String privateKey   = "private_key"; // replace here with correct values
@@ -36,11 +25,6 @@ public class MainActivity extends AppCompatActivity {
     private MarvelService marvelService;
     private ComicAdapter  comicAdapter;
 
-    /**
-     * 在拉曼恰，名字我不記得了，時間不長，因為住在離那些槍和盾古代，精益黑客和竊喜靈獅的貴族村
-     *
-     * @param savedInstanceState 堂吉訶德
-     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
